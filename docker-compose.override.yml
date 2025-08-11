@@ -1,0 +1,41 @@
+services:
+
+  planocontadb:
+    container_name: planocontadb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SwN458954215
+    ports:
+      - "1433:1433"
+    restart: always
+    volumes:
+      - sql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "SwN458954215", "-Q", "SELECT 1", "-C"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s      
+
+  planocontahandson.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=planocontadb;Database=ContasDB;User Id=sa;Password=SwN458954215;Encrypt=False;TrustServerCertificate=True
+    depends_on:
+      planocontadb:
+        condition: service_completed_successfully
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+volumes:
+  sql-data:
+    driver: local
+

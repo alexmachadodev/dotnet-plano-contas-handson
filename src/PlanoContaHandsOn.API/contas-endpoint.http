@@ -1,0 +1,49 @@
+@ContasApi_HostAddress = https://localhost:7277
+
+### Obter próximo código para uma conta RAIZ (nível 1)
+GET {{ContasApi_HostAddress}}/api/planos-contas/proximo-codigo
+
+
+### Obter próximo código
+GET {{ContasApi_HostAddress}}/api/planos-contas/proximo-codigo?idPai=FB676224-728B-4C8B-A64C-45030E0AA3FC
+
+
+### Criar um plano de conta RAIZ
+POST {{ContasApi_HostAddress}}/api/planos-contas
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "codigo": "9",
+  "aceitaLancamento": false,
+  "tipo": 1,
+  "idPai": null
+}
+
+### 4. Criar um plano de conta FILHo
+POST {{ContasApi_HostAddress}}/api/planos-contas
+Content-Type: application/json
+
+{
+  "nome": "Filho 1.3",
+  "codigo": "1.2.999",
+  "aceitaLancamento": false,
+  "tipo": 1,
+  "idPai": "C8B512F4-9478-4222-811D-487B3B8A3E4E"
+}
+
+
+### Listar a primeira página com o tamanho padrão
+GET {{ContasApi_HostAddress}}/api/planos-contas
+
+
+### Listar uma página específica com um tamanho de página diferente
+GET {{ContasApi_HostAddress}}/api/planos-contas?pagina=1&tamanhoPagina=5
+
+
+Filtrar por parte do NOME
+GET {{ContasApi_HostAddress}}/api/planos-contas?filtro=re
+
+
+### Excluir
+DELETE {{ContasApi_HostAddress}}/api/planos-contas/C8B512F4-9478-4222-811D-487B3B8A3E4E
