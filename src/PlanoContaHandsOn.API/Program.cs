@@ -6,7 +6,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IPlanoContaRepository, PlanoContaRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IGeradorCodigoPlanoContaService, GeradorCodigoPlanoContaService>();
 
 builder.Services.AddMediatR(cfg =>

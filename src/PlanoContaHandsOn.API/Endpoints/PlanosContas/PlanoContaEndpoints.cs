@@ -1,4 +1,6 @@
-﻿namespace PlanoContaHandsOn.API.Endpoints.PlanosContas;
+﻿using PlanoContaHandsOn.Application.PlanosContas.Queries.ListarPlanoContaPai;
+
+namespace PlanoContaHandsOn.API.Endpoints.PlanosContas;
 
 public static class PlanoContaEndpoints
 {
@@ -76,5 +78,15 @@ public static class PlanoContaEndpoints
             .WithName("ListarTiposDeConta")
             .WithSummary("Retorna a lista de tipos de plano de conta disponíveis (Receita, Despesa, etc.).")
             .Produces<IReadOnlyCollection<TipoResponse>>();
+
+        group.MapGet("/pais", async (ISender sender) =>
+            {
+                var resultado = await sender.Send(new ListarPlanoContaPaiQuery());
+
+                return Results.Ok(resultado);
+            })
+            .WithName("ListarPlanoContasPais")
+            .WithSummary("Retorna a lista de tipos de plano de conta pai disponíveis.")
+            .Produces<IReadOnlyCollection<PlanoContaPaiResponse>>();
     }
 }

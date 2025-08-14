@@ -3,14 +3,12 @@
 public class ExcluirPlanoContaCommandHandlerTests
 {
     private readonly IPlanoContaRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ExcluirPlanoContaCommandHandler _handler;
 
     public ExcluirPlanoContaCommandHandlerTests()
     {
         _repository = Substitute.For<IPlanoContaRepository>();
-        _unitOfWork = Substitute.For<IUnitOfWork>();
-        _handler = new ExcluirPlanoContaCommandHandler(_repository, _unitOfWork);
+        _handler = new ExcluirPlanoContaCommandHandler(_repository);
     }
 
     [Fact]
@@ -36,6 +34,6 @@ public class ExcluirPlanoContaCommandHandlerTests
             .WithMessage("Não é possível excluir uma conta que possui contas filhas. Exclua as contas filhas primeiro.");
 
         _repository.DidNotReceive().Remover(Arg.Any<PlanoConta>());
-        await _unitOfWork.DidNotReceive().SalvarAlteracoes(Arg.Any<CancellationToken>());
+        await _repository.UnitOfWork.DidNotReceive().SalvarAlteracoes(Arg.Any<CancellationToken>());
     }
 }

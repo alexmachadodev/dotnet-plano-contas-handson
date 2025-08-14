@@ -1,7 +1,10 @@
 ﻿namespace PlanoContaHandsOn.Infrastructure.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IUnitOfWork
 {
+    private const int NumeroViolacaoChaveUnica = 2627;
+    private const int NumeroViolacaoIndiceUnico = 2601;
+
     public DbSet<PlanoConta> PlanosContas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -9,5 +12,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(modelBuilder);
+    }
+
+    public async Task<int> SalvarAlteracoes(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return await SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex)
+            when (ex.InnerException is SqlException { Number: NumeroViolacaoChaveUnica or NumeroViolacaoIndiceUnico })
+        {
+            throw new InternalServerException("A operação não pôde ser concluída pois os dados foram modificados por outro usuário.");
+        }
     }
 }

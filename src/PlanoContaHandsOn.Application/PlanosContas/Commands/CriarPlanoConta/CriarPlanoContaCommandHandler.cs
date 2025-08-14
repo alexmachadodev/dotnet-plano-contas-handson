@@ -1,6 +1,8 @@
-﻿namespace PlanoContaHandsOn.Application.PlanosContas.Commands.CriarPlanoConta;
+﻿using PlanoContaHandsOn.Domain.Interfaces;
 
-public class CriarPlanoContaCommandHandler(IPlanoContaRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<CriarPlanoContaCommand, Guid>
+namespace PlanoContaHandsOn.Application.PlanosContas.Commands.CriarPlanoConta;
+
+public class CriarPlanoContaCommandHandler(IPlanoContaRepository repository) : IRequestHandler<CriarPlanoContaCommand, Guid>
 {
     public async Task<Guid> Handle(CriarPlanoContaCommand request, CancellationToken cancellationToken)
     {
@@ -31,7 +33,7 @@ public class CriarPlanoContaCommandHandler(IPlanoContaRepository repository, IUn
         
         await repository.Adicionar(novoPlanoConta, cancellationToken);
 
-        await unitOfWork.SalvarAlteracoes(cancellationToken);
+        await repository.UnitOfWork.SalvarAlteracoes(cancellationToken);
 
         return novoPlanoConta.Id;
     }
