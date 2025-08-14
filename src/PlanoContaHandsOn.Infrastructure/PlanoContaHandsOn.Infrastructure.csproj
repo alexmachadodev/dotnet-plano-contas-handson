@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PlanoContaHandsOn.Application\PlanoContaHandsOn.Application.csproj" />
-    <ProjectReference Include="..\PlanoContaHandsOn.Domain\PlanoContaHandsOn.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
