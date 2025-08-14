@@ -1,6 +1,4 @@
-﻿using PlanoContaHandsOn.Domain.Interfaces;
-
-namespace PlanoContaHandsOn.Application.PlanosContas.Commands.CriarPlanoConta;
+﻿namespace PlanoContaHandsOn.Application.PlanosContas.Commands.CriarPlanoConta;
 
 public class CriarPlanoContaCommandHandler(IPlanoContaRepository repository) : IRequestHandler<CriarPlanoContaCommand, Guid>
 {

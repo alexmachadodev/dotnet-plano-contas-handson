@@ -20,10 +20,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             return await SaveChangesAsync(cancellationToken);
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ConflictException();
+        }
         catch (DbUpdateException ex)
             when (ex.InnerException is SqlException { Number: NumeroViolacaoChaveUnica or NumeroViolacaoIndiceUnico })
         {
-            throw new InternalServerException("A operação não pôde ser concluída pois os dados foram modificados por outro usuário.");
+            throw new UniqueConstraintException();
         }
     }
 }

@@ -12,7 +12,7 @@ using PlanoContaHandsOn.Infrastructure.Data;
 namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250809193502_Inicial")]
+    [Migration("20250814033243_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -46,6 +46,12 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");

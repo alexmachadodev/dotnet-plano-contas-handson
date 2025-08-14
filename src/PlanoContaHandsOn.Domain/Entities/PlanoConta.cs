@@ -8,13 +8,14 @@ public class PlanoConta
     public bool AceitaLancamento { get; private set; }
     public Tipo Tipo { get; private set; }
     public Guid? IdPai { get; private set; }
+    public byte[] RowVersion { get; private set; }
 
     public PlanoConta(string nome, Codigo codigo, Tipo tipo, bool aceitaLancamento, Guid? idPai, Tipo? tipoPai)
     {
         if (string.IsNullOrWhiteSpace(nome))
             throw new DomainException("O nome do plano de conta não pode ser vazio.");
 
-        if(codigo is null)
+        if (codigo is null)
             throw new DomainException("O código do plano de conta não pode ser vazio.");
 
         if (idPai.HasValue && tipo != tipoPai)

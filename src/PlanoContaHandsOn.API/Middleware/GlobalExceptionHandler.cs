@@ -49,6 +49,18 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 Title = "Erro de validação de negócio",
                 Detail = domainException.Message
             },
+            ConflictException conflictException => new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Dados modificados por outro usuario",
+                Detail = conflictException.Message
+            },
+            UniqueConstraintException uniqueConstraintException => new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Dados já cadastrados",
+                Detail = uniqueConstraintException.Message
+            },
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,

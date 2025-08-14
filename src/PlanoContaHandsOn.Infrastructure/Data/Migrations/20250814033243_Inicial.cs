@@ -22,7 +22,8 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                     Codigo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     AceitaLancamento = table.Column<bool>(type: "bit", nullable: false),
                     Tipo = table.Column<int>(type: "int", nullable: false),
-                    IdPai = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    IdPai = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

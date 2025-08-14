@@ -20,4 +20,8 @@
     <ProjectReference Include="..\PlanoContaHandsOn.Domain\PlanoContaHandsOn.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
 </Project>

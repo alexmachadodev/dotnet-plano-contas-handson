@@ -27,6 +27,9 @@ public class PlanoContaConfiguration : IEntityTypeConfiguration<PlanoConta>
         builder.Property(c => c.AceitaLancamento)
             .IsRequired();
 
+        builder.Property(e => e.RowVersion)
+            .IsRowVersion();
+
         builder.HasIndex(p => new { p.Codigo })
             .IsUnique();
 
