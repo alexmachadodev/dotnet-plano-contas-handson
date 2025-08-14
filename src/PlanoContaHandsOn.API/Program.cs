@@ -20,12 +20,23 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddSwaggerDocumentation();
 
+builder.Services.AddTelemetry(builder.Configuration);
+
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+app.MapPrometheusScrapingEndpoint();
 
 app.UseSwaggerDocumentation();
 
 app.MapPlanoContaEndpoints();
 
 app.UseExceptionHandler(options => { });
+
+app.UseHealthChecks("/health", new HealthCheckOptions()
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();

@@ -19,6 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanoContaHandsOn.UnitTests
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{522C23BA-26DF-4C30-9BBF-5DEEE3D8F885}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "monitoring", "monitoring", "{17F49311-FE51-4904-8866-B97377532318}"
+	ProjectSection(SolutionItems) = preProject
+		monitoring\prometheus.yml = monitoring\prometheus.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +66,7 @@ Global
 		{11A94469-423D-4775-9F1F-4FE3CE031209} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{58E9454C-06F6-4B16-9043-0B0107F38F8B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{940411EE-E153-4356-B5F2-27CDBA1A3A69} = {A6971499-897C-4F3C-9E26-A1BA12ADEA32}
+		{17F49311-FE51-4904-8866-B97377532318} = {522C23BA-26DF-4C30-9BBF-5DEEE3D8F885}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFF0E4D2-0062-4A11-AD0E-0A441DD19C78}

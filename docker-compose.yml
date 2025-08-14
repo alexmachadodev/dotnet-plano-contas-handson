@@ -9,3 +9,11 @@ services:
       context: .
       dockerfile: src/PlanoContaHandsOn.API/Dockerfile
 
+  prometheus:
+    image: prom/prometheus:v3.5.0
+
+  grafana:
+    image: grafana/grafana-oss:12.1.0-ubuntu   
+
+  jaeger:
+    image: jaegertracing/jaeger:2.9.0 

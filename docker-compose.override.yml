@@ -23,9 +23,11 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Database=Server=planocontadb;Database=ContasDB;User Id=sa;Password=SwN458954215;Encrypt=False;TrustServerCertificate=True
+      - Otel__ServiceName=PlanoContasAPI
+      - Otel__OtlpEndpoint=http://localhost:4317
     depends_on:
       planocontadb:
-        condition: service_completed_successfully
+        condition: service_healthy
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -34,6 +36,35 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s 
+
+  prometheus:
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      planocontahandson.api:
+        condition: service_healthy
+
+  grafana:
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  jaeger:
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"    
 
 volumes:
   sql-data:

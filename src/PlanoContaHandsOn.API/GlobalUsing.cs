@@ -2,6 +2,8 @@
 global using Microsoft.AspNetCore.Diagnostics;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+global using HealthChecks.UI.Client;
 
 global using FluentValidation;
 global using MediatR;
