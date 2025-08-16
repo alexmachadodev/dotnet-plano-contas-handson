@@ -2,6 +2,8 @@
 
 public class PlanoContaRepository(AppDbContext context) : IPlanoContaRepository
 {
+    public IUnitOfWork UnitOfWork => context;
+
     public async Task<bool> PossuiFilhos(Guid planoContaPaiId, CancellationToken cancellationToken = default)
         => await context.PlanosContas.AnyAsync(c => c.IdPai == planoContaPaiId, cancellationToken);
 
@@ -48,11 +50,22 @@ public class PlanoContaRepository(AppDbContext context) : IPlanoContaRepository
         var totalRegistros = await query.LongCountAsync(cancellationToken);
 
         var itens = await query
-            .OrderBy(c => c.Codigo)
+            .OrderBy(c => EF.Property<HierarchyId>(c, "CodigoOrdenacao"))
             .Skip((pagina - 1) * tamanhoPagina)
             .Take(tamanhoPagina)
             .ToListAsync(cancellationToken);
 
         return (itens, totalRegistros);
     }
+
+    public async Task<IReadOnlyCollection<PlanoConta>> ListarPorAceitaLancamento(bool aceitaLancamento, CancellationToken cancellationToken)
+        => await context.PlanosContas
+            .AsNoTracking()
+            .Where(c => c.AceitaLancamento == aceitaLancamento)
+            .OrderBy(c => c.Codigo)
+            .ToListAsync(cancellationToken);
+
+    public void Dispose() => context.Dispose();
+
+    
 }

@@ -3,14 +3,12 @@
 public class CriarPlanoContaCommandHandlerTests
 {
     private readonly IPlanoContaRepository _planoContaRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly CriarPlanoContaCommandHandler _handler;
 
     public CriarPlanoContaCommandHandlerTests()
     {
         _planoContaRepository = Substitute.For<IPlanoContaRepository>();
-        _unitOfWork = Substitute.For<IUnitOfWork>();
-        _handler = new CriarPlanoContaCommandHandler(_planoContaRepository, _unitOfWork);
+        _handler = new CriarPlanoContaCommandHandler(_planoContaRepository);
     }
 
     [Fact]
@@ -37,7 +35,7 @@ public class CriarPlanoContaCommandHandlerTests
         var novaContaId = await _handler.Handle(comando, CancellationToken.None);
 
         // Assert
-        await _unitOfWork.Received(1).SalvarAlteracoes(Arg.Any<CancellationToken>());
+        await _planoContaRepository.UnitOfWork.Received(1).SalvarAlteracoes(Arg.Any<CancellationToken>());
         contaAdicionada.Should().NotBeNull();
         contaAdicionada?.Codigo.Value.Should().Be(comando.Codigo);
     }
@@ -69,6 +67,6 @@ public class CriarPlanoContaCommandHandlerTests
             .WithMessage("Plano de contas que aceita lançamento não pode ter contas filhas.");
 
         // Garantimos que a transação não foi comitada
-        await _unitOfWork.DidNotReceive().SalvarAlteracoes(Arg.Any<CancellationToken>());
+        await _planoContaRepository.UnitOfWork.DidNotReceive().SalvarAlteracoes(Arg.Any<CancellationToken>());
     }
 }

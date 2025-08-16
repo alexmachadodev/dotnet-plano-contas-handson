@@ -1,6 +1,6 @@
 ﻿namespace PlanoContaHandsOn.Application.PlanosContas.Commands.ExcluirPlanoConta;
 
-public class ExcluirPlanoContaCommandHandler(IPlanoContaRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<ExcluirPlanoContaCommand>
+public class ExcluirPlanoContaCommandHandler(IPlanoContaRepository repository) : IRequestHandler<ExcluirPlanoContaCommand>
 {
     public async Task Handle(ExcluirPlanoContaCommand request, CancellationToken cancellationToken)
     {
@@ -16,6 +16,6 @@ public class ExcluirPlanoContaCommandHandler(IPlanoContaRepository repository, I
         
         repository.Remover(planoContaExistente);
 
-        await unitOfWork.SalvarAlteracoes(cancellationToken);
+        await repository.UnitOfWork.SalvarAlteracoes(cancellationToken);
     }
 }

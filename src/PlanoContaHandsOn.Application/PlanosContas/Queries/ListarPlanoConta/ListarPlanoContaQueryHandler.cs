@@ -7,9 +7,9 @@ public class ListarPlanoContaQueryHandler(IPlanoContaRepository repository) : IR
         var (itens, totalRegistros) =
             await repository.ListarPaginado(request.Pagina, request.TamanhoPagina, request.Filtro, cancellationToken);
 
-        var itensDto = itens.Select(conta => new PlanoContaResponse(conta.Id, conta.Codigo.Value, conta.Nome,
+        var planoContaResponses = itens.Select(conta => new PlanoContaResponse(conta.Id, conta.Codigo.Value, conta.Nome,
             conta.AceitaLancamento, conta.Tipo.ToString())).ToList();
 
-        return new ResultadoPaginado<PlanoContaResponse>(request.Pagina, request.TamanhoPagina, totalRegistros, itensDto);
+        return new ResultadoPaginado<PlanoContaResponse>(request.Pagina, request.TamanhoPagina, totalRegistros, planoContaResponses);
     }
 }

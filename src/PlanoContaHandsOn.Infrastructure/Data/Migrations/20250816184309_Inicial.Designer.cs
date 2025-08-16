@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.SqlServer.Types;
 using PlanoContaHandsOn.Infrastructure.Data;
 
 #nullable disable
@@ -12,7 +13,7 @@ using PlanoContaHandsOn.Infrastructure.Data;
 namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250809193502_Inicial")]
+    [Migration("20250816184309_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -39,6 +40,11 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<SqlHierarchyId?>("CodigoOrdenacao")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("hierarchyid")
+                        .HasComputedColumnSql("CAST('/' + [Codigo] + '/' AS HIERARCHYID)", true);
+
                     b.Property<Guid?>("IdPai")
                         .HasColumnType("uniqueidentifier");
 
@@ -46,6 +52,12 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");
@@ -57,7 +69,7 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
 
                     b.HasIndex("IdPai");
 
-                    b.HasIndex("Nome", "Codigo");
+                    b.HasIndex("Nome", "CodigoOrdenacao");
 
                     b.ToTable("PlanoConta", (string)null);
 

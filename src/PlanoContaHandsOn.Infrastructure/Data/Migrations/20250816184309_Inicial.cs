@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.SqlServer.Types;
 
 #nullable disable
 
@@ -22,7 +23,9 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                     Codigo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     AceitaLancamento = table.Column<bool>(type: "bit", nullable: false),
                     Tipo = table.Column<int>(type: "int", nullable: false),
-                    IdPai = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    IdPai = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
+                    CodigoOrdenacao = table.Column<SqlHierarchyId>(type: "hierarchyid", nullable: true, computedColumnSql: "CAST('/' + [Codigo] + '/' AS HIERARCHYID)", stored: true)
                 },
                 constraints: table =>
                 {
@@ -56,9 +59,9 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                 column: "IdPai");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlanoConta_Nome_Codigo",
+                name: "IX_PlanoConta_Nome_CodigoOrdenacao",
                 table: "PlanoConta",
-                columns: new[] { "Nome", "Codigo" });
+                columns: new[] { "Nome", "CodigoOrdenacao" });
         }
 
         /// <inheritdoc />

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.SqlServer.Types;
 using PlanoContaHandsOn.Infrastructure.Data;
 
 #nullable disable
@@ -36,6 +37,11 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<SqlHierarchyId?>("CodigoOrdenacao")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("hierarchyid")
+                        .HasComputedColumnSql("CAST('/' + [Codigo] + '/' AS HIERARCHYID)", true);
+
                     b.Property<Guid?>("IdPai")
                         .HasColumnType("uniqueidentifier");
 
@@ -43,6 +49,12 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");
@@ -54,7 +66,7 @@ namespace PlanoContaHandsOn.Infrastructure.Data.Migrations
 
                     b.HasIndex("IdPai");
 
-                    b.HasIndex("Nome", "Codigo");
+                    b.HasIndex("Nome", "CodigoOrdenacao");
 
                     b.ToTable("PlanoConta", (string)null);
 
