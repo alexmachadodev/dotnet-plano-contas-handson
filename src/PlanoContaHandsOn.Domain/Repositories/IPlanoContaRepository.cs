@@ -1,4 +1,4 @@
-﻿namespace PlanoContaHandsOn.Domain.Interfaces;
+﻿namespace PlanoContaHandsOn.Domain.Repositories;
 
 public interface IPlanoContaRepository : IRepository<PlanoConta>
 {

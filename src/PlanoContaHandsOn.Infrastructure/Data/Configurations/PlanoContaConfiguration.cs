@@ -1,6 +1,4 @@
-﻿using PlanoContaHandsOn.Domain.Enums;
-
-namespace PlanoContaHandsOn.Infrastructure.Data.Configurations;
+﻿namespace PlanoContaHandsOn.Infrastructure.Data.Configurations;
 
 public class PlanoContaConfiguration : IEntityTypeConfiguration<PlanoConta>
 {
@@ -21,6 +19,9 @@ public class PlanoContaConfiguration : IEntityTypeConfiguration<PlanoConta>
             .HasMaxLength(255)
             .IsRequired();
 
+        builder.Property<HierarchyId>("CodigoOrdenacao")
+            .HasComputedColumnSql("CAST('/' + [Codigo] + '/' AS HIERARCHYID)", stored: true);
+
         builder.Property(c => c.Tipo)
             .IsRequired();
 
@@ -33,7 +34,7 @@ public class PlanoContaConfiguration : IEntityTypeConfiguration<PlanoConta>
         builder.HasIndex(p => new { p.Codigo })
             .IsUnique();
 
-        builder.HasIndex(p => new { p.Nome, p.Codigo });
+        builder.HasIndex("Nome", "CodigoOrdenacao");
 
         builder.HasOne<PlanoConta>()
             .WithMany()

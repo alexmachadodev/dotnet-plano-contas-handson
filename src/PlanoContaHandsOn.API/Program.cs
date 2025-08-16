@@ -3,7 +3,10 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Database");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString, sqlServerOptions =>
+    {
+        sqlServerOptions.UseHierarchyId();
+    }));
 
 builder.Services.AddScoped<IPlanoContaRepository, PlanoContaRepository>();
 builder.Services.AddTransient<IGeradorCodigoPlanoContaService, GeradorCodigoPlanoContaService>();

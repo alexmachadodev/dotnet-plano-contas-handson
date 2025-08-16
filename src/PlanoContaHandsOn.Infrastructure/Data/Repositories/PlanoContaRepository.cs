@@ -50,7 +50,7 @@ public class PlanoContaRepository(AppDbContext context) : IPlanoContaRepository
         var totalRegistros = await query.LongCountAsync(cancellationToken);
 
         var itens = await query
-            .OrderBy(c => c.Codigo)
+            .OrderBy(c => EF.Property<HierarchyId>(c, "CodigoOrdenacao"))
             .Skip((pagina - 1) * tamanhoPagina)
             .Take(tamanhoPagina)
             .ToListAsync(cancellationToken);
